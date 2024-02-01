@@ -111,6 +111,12 @@ $objetoCartera->loadData("data.csv");
 			<?= $objetoCartera->drawList() ?>
 		</tbody>
 	</table>
+	<br>
+<div>
+<a href="create.php" class="btn btn-primary">Añadir Empresa</a>
+</div>
+	
+
 </body>
 
 </html>

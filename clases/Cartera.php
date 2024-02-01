@@ -27,6 +27,14 @@ class Cartera
         $this->persist(); // Guardar los cambios en el archivo CSV
     }
 
+	public function insert($datos) {
+		// Crear un nuevo ID único para el nuevo cliente, esto es opcional y depende de tu implementación
+		$newId = uniqid(); // Por ejemplo, podrías generar un ID único o incrementar el último ID existente
+		$newCompany = new Empresa($newId, $datos["company"], $datos["investment"], $datos["date"], $datos["active"]);
+		array_push($this->clientes, $newCompany);
+		$this->persist(); // Guardar los cambios en el archivo CSV
+	}
+	
 	
 	public function persist() {
 		$file = fopen("data.csv", "w");
