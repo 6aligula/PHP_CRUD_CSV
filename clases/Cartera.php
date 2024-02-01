@@ -4,6 +4,12 @@ class Cartera
 {
 	public $clientes = [];
 
+	public function __construct() {
+		$this->clients = [];
+		// o cargar los clientes desde un archivo o base de datos aquí
+	}
+	
+
 	public function delete($id) {
 		foreach ($this->clientes as $key => $cliente) {
 			if ($cliente->getId() == $id) {
@@ -34,6 +40,20 @@ class Cartera
 		return null; // Retornar null si el cliente no se encuentra
 	}
 	
+	public function update($datos) { 
+		foreach ($this->clientes as $cliente) { 
+			if ($cliente->getId() == $datos["id"]) { 
+				$cliente->setCompany($datos["company"]);
+				// Asegúrate de actualizar todos los campos necesarios
+				// Por ejemplo:
+				// $cliente->setInvestment($datos["investment"]);
+				// $cliente->setDate($datos["date"]);
+				// $cliente->setActive($datos["active"]);
+				//var_dump($cliente); 
+			}
+		}
+		$this->persist(); // Guardar los cambios en el archivo CSV
+	}
 
 	public function loadData($fichero)
 	{
