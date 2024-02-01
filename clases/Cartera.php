@@ -4,12 +4,6 @@ class Cartera
 {
 	public $clientes = [];
 
-	public function __construct() {
-		$this->clients = [];
-		// o cargar los clientes desde un archivo o base de datos aquí
-	}
-	
-
 	public function delete($id) {
 		foreach ($this->clientes as $key => $cliente) {
 			if ($cliente->getId() == $id) {
@@ -19,6 +13,20 @@ class Cartera
 		}
 		$this->persist();
 	}
+	
+	public function update($datos) {
+        foreach ($this->clientes as $cliente) {
+            if ($cliente->getId() == $datos["id"]) {
+                $cliente->setCompany($datos["company"]);
+                $cliente->setInvestment($datos["investment"]);
+                $cliente->setDate($datos["date"]);
+                $cliente->setActive($datos["active"]);
+                // Asegúrate de actualizar todos los campos necesarios
+            }
+        }
+        $this->persist(); // Guardar los cambios en el archivo CSV
+    }
+
 	
 	public function persist() {
 		$file = fopen("data.csv", "w");
@@ -39,37 +47,21 @@ class Cartera
 		}
 		return null; // Retornar null si el cliente no se encuentra
 	}
-	
-	public function update($datos) { 
-		foreach ($this->clientes as $cliente) { 
-			if ($cliente->getId() == $datos["id"]) { 
-				$cliente->setCompany($datos["company"]);
-				// Asegúrate de actualizar todos los campos necesarios
-				// Por ejemplo:
-				// $cliente->setInvestment($datos["investment"]);
-				// $cliente->setDate($datos["date"]);
-				// $cliente->setActive($datos["active"]);
-				//var_dump($cliente); 
-			}
-		}
-		$this->persist(); // Guardar los cambios en el archivo CSV
-	}
 
 	public function loadData($fichero)
 	{
 		$gestor = fopen($fichero, "r");
-		$headers = fgetcsv($gestor); // Si tu CSV tiene una cabecera, esta línea la lee y descarta.
+		//$headers = fgetcsv($gestor); // Si tu CSV tiene una cabecera, esta línea la lee y descarta.
 	
 		while (($element = fgetcsv($gestor)) !== false) {
 			array_push(
-				$this->clientes, // Cambia esto de $this->clients a $this->clientes
+				$this->clientes,
 				new Empresa(...$element) // Spread Operator
 			);
 		}
 	
 		fclose($gestor);
 	}
-	
 
 
 	public function drawList()
